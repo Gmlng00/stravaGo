@@ -1,0 +1,139 @@
+{% load static %}
+<header>
+    <!-- Intro settings -->
+    <style>
+        #intro {
+            /* Margin to fix overlapping fixed navbar */
+            margin-top: 58px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #333;
+            padding: 20px 0;
+        }
+
+        #intro h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 991px) {
+            #intro {
+                margin-top: 45px;
+            }
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .navbar .nav-link {
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: #ff9a9e;
+            text-decoration: underline;
+        }
+
+        .navbar-toggler {
+            border: 1px solid #fff;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        #user-avatar {
+            width: 30px;
+            height: 30px;
+        }
+
+        .shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow border-bottom">
+        <div class="container">
+            <!-- Navbar brand -->
+            <span class="navbar-brand">StravaGo</span>
+
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarExample01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="topNav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'home-page' %}">Home</a>
+                    </li>
+                    {% if not user.id %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'find-trip-page' %}">Cari</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'scheduled-trips-page' %}">Jadwal Tersedia</a>
+                    </li>
+                    {% endif %}
+                    {% if user.id %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'category-page' %}">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'location-page' %}">Lokasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'bus-page' %}">Joki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'schedule-page' %}">Penjadwalan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'booking-page' %}">Booking</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav d-flex flex-row">
+                    {% if user.id %}
+                    <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <span class="me-1"><img src="{{ MEDIA_URL }}/default/default-avatar.png" alt="User Avatar" id="user-avatar" class="img-thumbnail rounded-circle"></span>Howdy, {{ user.first_name }} {{user.last_name}}
+                        </a>
+                    </li>
+                    <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+    <!-- Jumbotron -->
+    <div id="intro" class="pt-2 text-center">
+        <h1 class="mb-3">StravaGo!!</h1>
+        <p class="mb-3">Raih angan, biarkan kesenangan berada ditangan mu!</p>
+    </div>
+    <!-- Jumbotron -->
+</header>
+<script>
+    $(function() {
+        $('#topNav .nav-link').each(function() {
+            var current = '{{ request.get_full_path | urlencode }}';
+            if (current == $(this).attr('href')) {
+                $(this).parent().addClass('active');
+            }
+        });
+    });
+</script>
